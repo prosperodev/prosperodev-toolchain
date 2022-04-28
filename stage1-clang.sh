@@ -5,12 +5,12 @@ PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
 REPO_URL="https://github.com/llvm/llvm-project"
 REPO_FOLDER="llvm-project"
-REPO_PROVISIONAL_COMMIT="30f22429d38944e126db75296a1ffc6c12c7b87a"
+REPO_PROVISIONAL_COMMIT="17f3a92ee5d5490e84cc81481b0947f6a9be3106"
 if test ! -d "$REPO_FOLDER"; then
 	git clone $REPO_URL && cd $REPO_FOLDER || exit 1
 	git checkout ${REPO_PROVISIONAL_COMMIT}||exit 1
-	patch --strip=1 --input=../unofficial_prospero_llvm_15.0.patch
 fi
+exit
 cmake \
     -G "Unix Makefiles" \
     -S llvm -B build \
