@@ -3,7 +3,7 @@ name: CI-Docker
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -38,7 +38,6 @@ jobs:
       with:
         push: true
         tags: ghcr.io/${{ github.repository }}:${{ env.DOCKER_TAG }}
-        tags: ${{ github.repository }}:${{ env.DOCKER_TAG }}
     
     - name: Send Compile action
       run: |
