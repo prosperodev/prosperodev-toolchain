@@ -1,6 +1,8 @@
+#!/bin/bash
+# Script phase by fjtrujy
+
 #/bin/bash
 set -e
-PROSPERODEV=/usr/local/prosperodev
 PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
 REPO_URL="https://github.com/llvm/llvm-project"

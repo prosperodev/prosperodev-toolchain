@@ -32,7 +32,7 @@ jobs:
       run: |
         export PROSPERODEV=$PWD/prosperodev
         export PATH=$PROSPERODEV/bin:$PATH
-        ./toolchain.sh
+        ./build-all.sh
 
     - name: Get short SHA
       id: slug
