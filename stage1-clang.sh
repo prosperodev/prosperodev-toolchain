@@ -15,9 +15,9 @@ fi
 EXTRA_FLAGS=""
 
 ## Check if MacPort installed
-if [ "${OSVER:0:6}" == Darwin ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
     if [ -d "/opt/local/lib" ]; then
-        EXTRA_FLAGS="CFLAGS=\"$CFLAGS -I/opt/local/include -O2\" LDFLAGS=\"$LDFLAGS -L/opt/local/lib\""
+        EXTRA_FLAGS="CFLAGS=\"$CFLAGS -I/opt/local/include\" LDFLAGS=\"$LDFLAGS -L/opt/local/lib\""
     fi
 fi
 
