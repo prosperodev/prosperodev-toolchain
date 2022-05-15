@@ -10,7 +10,17 @@ if test ! -d "$REPO_FOLDER"; then
 	git clone $REPO_URL && cd $REPO_FOLDER || exit 1
 	git checkout ${REPO_PROVISIONAL_COMMIT}||exit 1
 fi
-exit
+
+## Extra FLAGS
+EXTRA_FLAGS=""
+
+## Check if MacPort installed
+if [ "${OSVER:0:6}" == Darwin ]; then
+    if [ -d "/opt/local/lib" ]; then
+        EXTRA_FLAGS="CFLAGS=\"$CFLAGS -I/opt/local/include -O2\" LDFLAGS=\"$LDFLAGS -L/opt/local/lib\""
+    fi
+fi
+
 cmake \
     -G "Unix Makefiles" \
     -S llvm -B build \
@@ -24,8 +34,9 @@ cmake \
 
 ## Enter in build folder
 cd build || exit 1
+
 ## Compile and install.
 make --quiet -j $PROC_NR clean   || { exit 1; }
-make --quiet -j $PROC_NR CFLAGS="$CFLAGS -I/opt/local/include -O2" LDFLAGS="$LDFLAGS -L/opt/local/lib"|| { exit 1; }
+make --quiet -j $PROC_NR $EXTRA_FLAGS || { exit 1; }
 make --quiet -j $PROC_NR install || { exit 1; }
 make --quiet -j $PROC_NR clean   || { exit 1; }

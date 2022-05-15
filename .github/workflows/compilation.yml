@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [run_build, run_release]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-12, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Ubuntu dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install texinfo bison flex findutils ninja-build
+    
+    - name: Install Mac dependencies
+      if: startsWith( matrix.os[0], 'macos' )
+      run: |
+        brew update
+        brew install texinfo bison flex ninja
+
+    - name: Runs all the stages in the shell
+      run: |
+        export PROSPERODEV=$PWD/prosperodev
+        export PATH=$PROSPERODEV/bin:$PATH
+        ./toolchain.sh
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
+    - name: Compress prosperodev folder
+      run: |
+        tar -zcvf prosperodev.tar.gz prosperodev
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: prosperodev-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
+        path: prosperodev.tar.gz
+    
+    - name: Rename prosperodev.tar.gz file
+      run: |
+        mv prosperodev.tar.gz prosperodev-${{matrix.os}}.tar.gz
+    - name: Extract tag name
+      if: startsWith(github.ref, 'refs/tags/')
+      id: tag
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    
+    - name: Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: prosperodev-${{matrix.os}}.tar.gz
+        tag_name: ${{ steps.tag.outputs.VERSION }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
