@@ -5,7 +5,7 @@ PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
 REPO_URL="https://github.com/llvm/llvm-project"
 REPO_FOLDER="llvm-project"
-REPO_PROVISIONAL_COMMIT="17f3a92ee5d5490e84cc81481b0947f6a9be3106"
+REPO_PROVISIONAL_COMMIT="2ed0123b7fedd6360b0dc06cab9721f108123a98"
 if test ! -d "$REPO_FOLDER"; then
 	git clone $REPO_URL && cd $REPO_FOLDER || exit 1
 	git checkout ${REPO_PROVISIONAL_COMMIT}||exit 1
@@ -25,7 +25,7 @@ cmake \
     -G "Unix Makefiles" \
     -S llvm -B build \
     -DLLVM_TARGETS_TO_BUILD="X86" \
-    -DLLVM_ENABLE_PROJECTS="clang" \
+    -DLLVM_ENABLE_PROJECTS="clang;lld" \
     -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DCMAKE_INSTALL_PREFIX=${PROSPERODEV}/ \
     -DLLVM_DEFAULT_TARGET_TRIPLE=x86_64-sie-ps5 \
