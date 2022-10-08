@@ -16,9 +16,9 @@ EXTRA_FLAGS=""
 
 ## Check if MacPort installed
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    if [ -d "/opt/local/lib" ]; then
-        EXTRA_FLAGS="CFLAGS=\"$CFLAGS -I/opt/local/include\" LDFLAGS=\"$LDFLAGS -L/opt/local/lib\""
-    fi
+	if [ -d "/opt/local/lib" ]; then
+		EXTRA_FLAGS="CFLAGS=-I/opt/local/include $CFLAGS LDFLAGS=-L/opt/local/lib $LDFLAGS"
+	fi
 fi
 
 cmake \

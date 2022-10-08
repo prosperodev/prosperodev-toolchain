@@ -1,8 +1,8 @@
 #!/bin/bash
 # toolchain.sh by fjtrujy
 
-## Enter the ps2dev directory.
-cd "`dirname $0`" || { echo "ERROR: Could not enter the ps2dev directory."; exit 1; }
+## Enter the prosperodev directory.
+cd "`dirname $0`" || { echo "ERROR: Could not enter the prosperodev directory."; exit 1; }
 
 ## Create the build directory.
 mkdir -p build || { echo "ERROR: Could not create the build directory."; exit 1; }
