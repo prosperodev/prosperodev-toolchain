@@ -7,10 +7,8 @@ PROC_NR=$(getconf _NPROCESSORS_ONLN)
 
 REPO_URL="https://github.com/llvm/llvm-project"
 REPO_FOLDER="llvm-project"
-REPO_PROVISIONAL_COMMIT="2ed0123b7fedd6360b0dc06cab9721f108123a98"
 if test ! -d "$REPO_FOLDER"; then
 	git clone $REPO_URL && cd $REPO_FOLDER || exit 1
-	git checkout ${REPO_PROVISIONAL_COMMIT}||exit 1
 fi
 
 ## Extra FLAGS
